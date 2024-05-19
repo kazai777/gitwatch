@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# GitWatch
 
-## Getting Started
+![](https://img.shields.io/github/stars/pandao/editor.md.svg) ![](https://img.shields.io/github/forks/pandao/editor.md.svg) ![](https://img.shields.io/github/tag/pandao/editor.md.svg) ![](https://img.shields.io/github/release/pandao/editor.md.svg) ![](https://img.shields.io/github/issues/pandao/editor.md.svg) ![](https://img.shields.io/bower/v/editor.md.svg)
 
-First, run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+The GitWatch project is an opensource project whose aim is to list all open-source projects available on GitHub, filtering them by category, language and popularity.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+###TODO
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- [ ] Add more search filters
+- [ ] Add a graph of the most popular languages on GitHub
+- [ ] Add a tutorial for open source beginners
+- [ ] Add the most popular repos of the moment
+...
 
-## Learn More
+### Getting Started
+---
+###### *Clone this project :*
 
-To learn more about Next.js, take a look at the following resources:
+``git clone https://github.com/kazai777/gitwatch``
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+###### *Install dependencies :*
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+``npm install``
 
-## Deploy on Vercel
+###### *Add GitHub token :*
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Create `.env.local` file in the root directory
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Add this line in `.env.local` file, replacing `yourgithubtoken` with your token :
+
+``GITHUB_TOKEN=yourgithubtoken``
+
+###### *Launch the project :*
+
+``npm run dev``
