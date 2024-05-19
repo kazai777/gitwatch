@@ -9,7 +9,9 @@ The GitWatch project is an opensource project whose aim is to list all open-sour
 ---
 ###### *Clone this project :*
 
-```git clone https://github.com/kazai777/gitwatch```
+```go
+git clone https://github.com/kazai777/gitwatch
+```
 
 ###### *Install dependencies :*
 
