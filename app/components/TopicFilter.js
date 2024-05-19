@@ -1,4 +1,6 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
+import { Input } from "@nextui-org/react";
+import { SearchIcon } from "./SearchIcon";
 import { themes } from '../data/data';
 
 export default function TopicFilter({ onFilter, initialValue }) {
@@ -27,28 +29,52 @@ export default function TopicFilter({ onFilter, initialValue }) {
   };
 
   return (
-    <div className="my-4">
-      <input
-        type="text"
+    <div className="relative w-full max-w-[340px] mx-2">
+      <Input
+        label="Search"
+        isClearable
+        radius="lg"
+        classNames={{
+          label: "text-black/50 dark:text-white/90",
+          input: [
+            "bg-transparent",
+            "text-black/90 dark:text-white/90",
+            "placeholder:text-default-700/50 dark:placeholder:text-white/60",
+          ],
+          innerWrapper: "bg-transparent",
+          inputWrapper: [
+            "shadow-xl",
+            "bg-default-200/50",
+            "dark:bg-default/60",
+            "backdrop-blur-xl",
+            "backdrop-saturate-200",
+            "hover:bg-default-200/70",
+            "dark:hover:bg-default/70",
+            "group-data-[focus=true]:bg-default-200/50",
+            "dark:group-data-[focus=true]:bg-default/60",
+            "!cursor-text",
+          ],
+        }}
+        placeholder="Type to search..."
         value={topic}
         onChange={handleChange}
-        className="border p-2 mr-2"
-        placeholder="Filter by topic"
+        startContent={
+          <SearchIcon className="text-black/50 mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0" />
+        }
       />
-      <button onClick={handleFilter} className="bg-green-500 text-white p-2">
-        Apply Topic Filter
-      </button>
-      <ul className="border border-gray-300 mt-2">
-        {suggestions.map((suggestion) => (
-          <li
-            key={suggestion}
-            onClick={() => selectSuggestion(suggestion)}
-            className="cursor-pointer p-2 hover:bg-gray-200"
-          >
-            {suggestion}
-          </li>
-        ))}
-      </ul>
+      {suggestions.length > 0 && (
+        <ul className="absolute z-10 bg-white border text-black border-gray-300 rounded-lg mt-2 w-full">
+          {suggestions.map((suggestion) => (
+            <li
+              key={suggestion}
+              onClick={() => selectSuggestion(suggestion)}
+              className="cursor-pointer p-2 rounded-lg hover:bg-gray-200"
+            >
+              {suggestion}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

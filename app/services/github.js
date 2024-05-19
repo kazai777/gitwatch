@@ -41,7 +41,7 @@ export const fetchRecentGitHubProjects = async () => {
         q: query,
         sort: 'updated',
         order: 'desc',
-        per_page: 10,
+        per_page: 6,
       },
       headers: {
         Authorization: `token ${process.env.GITHUB_TOKEN}`,

@@ -31,17 +31,3 @@ body {
     text-wrap: balance;
   }
 }
-
-/* styles/globals.css */
-input {
-  color: black; /* Assurez-vous que la couleur du texte est définie */
-  background-color: white; /* Assurez-vous que la couleur de fond est définie */
-  border: 1px solid #ccc; /* Définir une bordure pour plus de visibilité */
-  padding: 8px; /* Ajoutez un peu de padding pour l'esthétique */
-  font-size: 16px; /* Assurez-vous que la taille de la police est lisible */
-}
-
-input::placeholder {
-  color: #999; /* Assurez-vous que la couleur du placeholder est différente */
-}
-

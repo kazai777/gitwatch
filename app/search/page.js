@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { fetchGitHubProjects } from '../services/github';
+import { Card, Skeleton, Spinner } from "@nextui-org/react";
 import ProjectCard from '../components/ProjectCard';
 import LanguageFilter from '../components/LanguageFilter';
 import TopicFilter from '../components/TopicFilter';
@@ -11,6 +12,7 @@ export default function Search() {
   const [projects, setProjects] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [initialLoading, setInitialLoading] = useState(true);
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -28,10 +30,15 @@ export default function Search() {
   // Fetch projects when search parameters or page change
   useEffect(() => {
     const loadProjects = async () => {
-      setLoading(true);
+      if (page === 1) {
+        setInitialLoading(true);
+      } else {
+        setLoading(true);
+      }
       const newProjects = await fetchGitHubProjects(page, language, topic);
       setProjects((prevProjects) => (page === 1 ? newProjects : [...prevProjects, ...newProjects]));
       setLoading(false);
+      setInitialLoading(false);
     };
     loadProjects();
   }, [page, language, topic]);
@@ -60,19 +67,48 @@ export default function Search() {
     router.push(`/search?${query}`);
   };
 
+  const handleFilter = () => {
+    const query = new URLSearchParams({ language, topic }).toString();
+    router.push(`/search?${query}`);
+  };
+
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold">Search GitHub Open Source Projects</h1>
-      <div className="my-4">
+      <h1 className="text-3xl font-bold text-center mb-8">Search GitHub Open Source Projects</h1>
+      <div className="flex justify-center mb-8">
         <LanguageFilter onFilter={handleLanguageFilter} initialValue={language} />
         <TopicFilter onFilter={handleTopicFilter} initialValue={topic} />
+        <button onClick={handleFilter} className="bg-blue-500 text-white p-2 ml-2 rounded-lg">
+          Search
+        </button>
       </div>
-      <div>
-        {projects.map((project) => (
-          <ProjectCard key={project.id} project={project} />
-        ))}
+      <div className="flex justify-center">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          {initialLoading
+            ? Array.from({ length: 10 }).map((_, index) => (
+                <Card key={index} className="w-full sm:w-[600px] space-y-5 p-4" radius="lg">
+                  <Skeleton className="rounded-lg">
+                    <div className="h-24 rounded-lg bg-default-300"></div>
+                  </Skeleton>
+                  <div className="space-y-3">
+                    <Skeleton className="w-full rounded-lg">
+                      <div className="h-3 w-full rounded-lg bg-default-200"></div>
+                    </Skeleton>
+                    <Skeleton className="w-4/5 rounded-lg">
+                      <div className="h-3 w-4/5 rounded-lg bg-default-200"></div>
+                    </Skeleton>
+                    <Skeleton className="w-2/5 rounded-lg">
+                      <div className="h-3 w-2/5 rounded-lg bg-default-300"></div>
+                    </Skeleton>
+                  </div>
+                </Card>
+              ))
+            : projects.map((project) => (
+                <ProjectCard key={project.id} project={project} />
+              ))}
+        </div>
       </div>
-      {loading && <p>Loading more projects...</p>}
+      {loading && <div className="flex justify-center mt-8"><Spinner color="primary" /></div>}
     </div>
   );
 }
