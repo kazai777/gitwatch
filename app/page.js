@@ -75,7 +75,9 @@ export default function Home() {
 
       <h2 className="text-2xl font-bold mb-4 text-center">Most Recently Updated Repositories</h2>
       <div className="text-center mb-4">
-        <p>Next update in: {Math.floor(countdown / 60)}:{countdown % 60 < 10 ? `0${countdown % 60}` : countdown % 60}</p>
+        <p className='countdown'>
+          Next update in: {Math.floor(countdown / 60)}:{countdown % 60 < 10 ? `0${countdown % 60}` : countdown % 60}
+        </p>
       </div>
       <div className="flex justify-center">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
