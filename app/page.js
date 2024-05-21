@@ -46,7 +46,7 @@ export default function Home() {
         <div className="container mx-auto text-center">
           <h1 className="text-4xl font-bold mb-4">Welcome to GitWatch</h1>
           <p className="mb-8">Discover and contribute to the most recent and popular open source projects on GitHub.</p>
-          <Button onClick={handleFilter} variant="flat" color='secondary' className="py-2 px-4">
+          <Button onClick={handleFilter} variant="shadow" color='secondary' className="py-2 px-4">
             Start Exploring
           </Button>
         </div>

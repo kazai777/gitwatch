@@ -36,7 +36,7 @@ export default function ProjectCard({ project }) {
               <p className="text-small">Stars: {project.stargazers_count}</p>
               <p className="text-small">Forks: {project.forks_count}</p>
               <Link href={project.html_url} passHref>
-                <Button as="a" target="_blank" variant="light" color="secondary">
+                <Button as="a" target="_blank" variant="flat" color="secondary">
                   View Repo
                 </Button>
               </Link>
