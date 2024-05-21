@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { fetchRecentGitHubProjects } from './services/github';
-import { Card, Skeleton, Button } from "@nextui-org/react";
+import { Card, Skeleton, Button, Progress } from "@nextui-org/react";
 import ProjectCard from './components/ProjectCard';
 import { SearchIcon } from './components/SearchIcon';
 import LanguageFilter from './components/LanguageFilter';
@@ -14,6 +14,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [language, setLanguage] = useState('');
   const [topic, setTopic] = useState('');
+  const [countdown, setCountdown] = useState(60);
   const router = useRouter();
 
   const loadRecentProjects = async () => {
@@ -21,6 +22,7 @@ export default function Home() {
     const recentProjects = await fetchRecentGitHubProjects();
     setProjects(recentProjects);
     setLoading(false);
+    setCountdown(60);
   };
 
   useEffect(() => {
@@ -31,7 +33,20 @@ export default function Home() {
       loadRecentProjects();
     }, 60000);
 
-    return () => clearInterval(interval);
+    const countdownInterval = setInterval(() => {
+      setCountdown((prevCountDown) => {
+        if (prevCountDown === 0) {
+          return 60;
+        }
+        return prevCountDown - 1;
+      
+      });
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+      clearInterval(countdownInterval);
+    }; 
   }, []);
 
   const handleFilter = () => {
@@ -61,8 +76,19 @@ export default function Home() {
         </Button>
       </div>
 
-      <h2 className="text-2xl font-bold mb-4 text-center">Most Recently Updated Repositories</h2>
-      <div className="flex justify-center">
+      <h2 className="text-2xl font-bold mb-7 text-center">Most Recently Updated Repositories</h2>
+      <div className= "flex justify-center text-center mb-4">
+          <Progress 
+            size='sm' 
+            color='secondary'
+            value={countdown} 
+            className="w-3/5 font-size-1.5xl"  
+            showValueLabel={true} 
+            formatOptions={{ style: 'unit', unit: 'second', unitDisplay: 'narrow'}} 
+            label='Next refresh in'
+          />
+      </div>
+      <div className="flex justify-center mb-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {loading
             ? Array.from({ length: 6 }).map((_, index) => (

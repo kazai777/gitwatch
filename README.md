@@ -19,6 +19,9 @@ git clone https://github.com/kazai777/gitwatch
 npm install
 ```
 
+###### *Create a GitHub token :*
+Go to `Settings` > `Developer settings` > `Personal access tokens` > `Generate new token`
+
 ###### *Add GitHub token :*
 
 Create `.env.local` file in the root directory
@@ -28,6 +31,7 @@ Add this line in `.env.local` file, replacing `yourgithubtoken` with your token 
 ```go
 GITHUB_TOKEN=yourgithubtoken
 ```
+
 
 ###### *Launch the project :*
 
