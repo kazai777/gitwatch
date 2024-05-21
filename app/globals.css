@@ -31,33 +31,3 @@ body {
     text-wrap: balance;
   }
 }
-
-/* Style du texte pour le décompte */
-.countdown {
-  font-family: 'Arial', sans-serif; /* Police de caractère */
-  font-size: 1rem; /* Taille du texte */
-  font-weight: bold; /* Texte en gras */
-  color: #007bff; /* Couleur du texte */
-  background-color: #011335; /* Couleur de fond */
-  padding: 10px 20px; /* Espacement intérieur */
-  border-radius: 10px; /* Coins arrondis */
-  display: inline-block; /* Alignement en ligne */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre portée */
-  animation: pulse 2s infinite; /* Animation de pulsation */
-}
-
-/* Animation de pulsation */
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  50% {
-    transform: scale(1.05);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  }
-  100% {
-    transform: scale(1);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-}

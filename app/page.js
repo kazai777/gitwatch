@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { fetchRecentGitHubProjects } from './services/github';
-import { Card, Skeleton } from "@nextui-org/react";
+import { Card, Skeleton, Progress } from "@nextui-org/react";
 import ProjectCard from './components/ProjectCard';
 import LanguageFilter from './components/LanguageFilter';
 import TopicFilter from './components/TopicFilter';
@@ -73,13 +73,19 @@ export default function Home() {
         </button>
       </div>
 
-      <h2 className="text-2xl font-bold mb-4 text-center">Most Recently Updated Repositories</h2>
-      <div className="text-center mb-4">
-        <p className='countdown'>
-          Next update in: {Math.floor(countdown / 60)}:{countdown % 60 < 10 ? `0${countdown % 60}` : countdown % 60}
-        </p>
+      <h2 className="text-2xl font-bold mb-7 text-center">Most Recently Updated Repositories</h2>
+      <div className= "flex justify-center text-center mb-4">
+          <Progress 
+            size='sm' 
+            color='secondary'
+            value={countdown} 
+            className="w-3/5 font-size-1.5xl"  
+            showValueLabel={true} 
+            formatOptions={{ style: 'unit', unit: 'second', unitDisplay: 'narrow'}} 
+            label='Next refresh in'
+          />
       </div>
-      <div className="flex justify-center">
+      <div className="flex justify-center mb-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {loading
             ? Array.from({ length: 6 }).map((_, index) => (
