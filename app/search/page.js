@@ -3,10 +3,11 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { fetchGitHubProjects } from '../services/github';
-import { Card, Skeleton, Spinner } from "@nextui-org/react";
+import { Card, Skeleton, Spinner, Button } from "@nextui-org/react";
 import ProjectCard from '../components/ProjectCard';
 import LanguageFilter from '../components/LanguageFilter';
 import TopicFilter from '../components/TopicFilter';
+import { SearchIcon } from '../components/SearchIcon';
 
 export default function Search() {
   const [projects, setProjects] = useState([]);
@@ -78,9 +79,11 @@ export default function Search() {
       <div className="flex justify-center mb-8">
         <LanguageFilter onFilter={handleLanguageFilter} initialValue={language} />
         <TopicFilter onFilter={handleTopicFilter} initialValue={topic} />
-        <button onClick={handleFilter} className="bg-blue-500 text-white p-2 ml-2 rounded-lg">
+        <Button onClick={handleFilter} className="p-4 ml-4 mt-2" variant="flat"
+          endContent={<SearchIcon className="text-black/50 mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0" />} 
+        >
           Search
-        </button>
+        </Button>
       </div>
       <div className="flex justify-center">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
