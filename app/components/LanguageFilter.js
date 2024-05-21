@@ -31,7 +31,7 @@ export default function LanguageFilter({ onFilter, initialValue }) {
   return (
     <div className="relative w-full max-w-[340px] mx-2">
       <Input
-        label="Search"
+        label="Language"
         isClearable
         radius="lg"
         classNames={{
