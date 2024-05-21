@@ -47,3 +47,7 @@ npm run dev
 ## Authors
 
 - [@kazai777](https://www.github.com/kazai777)
+
+## Contributors
+
+- [@DIGIX666](https://www.github.com/DIGIX666)
