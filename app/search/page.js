@@ -86,7 +86,7 @@ export default function Search() {
             Search
           </Button>
       </div>
-      <Suspense fallback={<div className="flex justify-center mt-8"><Spinner color="secondary" /></div>}>
+      <Suspense>
         <div className="flex justify-center">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {initialLoading
