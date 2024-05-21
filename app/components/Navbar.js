@@ -30,7 +30,7 @@ export default function NavbarNavigation() {
         {menuItems.map((item) => (
           <NavbarItem key={item.name} isActive={pathname === item.path}>
             <Link 
-              color={pathname === item.path ? "primary" : "foreground"} 
+              color={pathname === item.path ? "secondary" : "foreground"} 
               href={item.path}
             >
               {item.name}
@@ -40,7 +40,7 @@ export default function NavbarNavigation() {
       </NavbarContent>
       <NavbarContent justify="end">
         <NavbarItem>
-          <Button as={Link} color="primary" href="https://github.com/kazai777/gitwatch" variant="flat">
+          <Button as={Link} color="secondary" href="https://github.com/kazai777/gitwatch" variant="flat" size="md">
             Contribute
           </Button>
         </NavbarItem>
@@ -50,7 +50,7 @@ export default function NavbarNavigation() {
           <NavbarMenuItem key={`${item.name}-${index}`}>
             <Link
               color={
-                pathname === item.path ? "primary" : "foreground"
+                pathname === item.path ? "secondary" : "foreground"
               }
               className="w-full"
               href={item.path}

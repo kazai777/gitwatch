@@ -1,33 +1,15 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { fetchGitHubProjects } from '../services/github';
-import { Card, Skeleton, Spinner } from "@nextui-org/react";
+import { Card, Skeleton, Spinner, Button } from "@nextui-org/react";
 import ProjectCard from '../components/ProjectCard';
 import LanguageFilter from '../components/LanguageFilter';
 import TopicFilter from '../components/TopicFilter';
+import { SearchIcon } from '../components/SearchIcon';
 
-export default function Search() {
-  const [projects, setProjects] = useState([]);
-  const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [initialLoading, setInitialLoading] = useState(true);
-  const searchParams = useSearchParams();
-  const router = useRouter();
-
-  // Read initial search parameters from URL
-  useEffect(() => {
-    const initialLanguage = searchParams.get('language') || '';
-    const initialTopic = searchParams.get('topic') || '';
-    setLanguage(initialLanguage);
-    setTopic(initialTopic);
-  }, [searchParams]);
-
-  const [language, setLanguage] = useState(searchParams.get('language') || '');
-  const [topic, setTopic] = useState(searchParams.get('topic') || '');
-
-  // Fetch projects when search parameters or page change
+function Projects({ language, topic, page, setProjects, setLoading, setInitialLoading, projects }) {
   useEffect(() => {
     const loadProjects = async () => {
       if (page === 1) {
@@ -41,17 +23,52 @@ export default function Search() {
       setInitialLoading(false);
     };
     loadProjects();
-  }, [page, language, topic]);
+  }, [page, language, topic, setInitialLoading, setLoading, setProjects]);
 
-  const handleScroll = () => {
-    if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight) return;
-    setPage((prevPage) => prevPage + 1);
-  };
+  return (
+    <div className="flex justify-center">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        {projects.map((project) => (
+          <ProjectCard key={project.id} project={project} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function SearchParamsWrapper({ setLanguage, setTopic, children }) {
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const initialLanguage = searchParams.get('language') || '';
+    const initialTopic = searchParams.get('topic') || '';
+    setLanguage(initialLanguage);
+    setTopic(initialTopic);
+  }, [searchParams, setLanguage, setTopic]);
+
+  return children;
+}
+
+export default function Search() {
+  const [projects, setProjects] = useState([]);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [initialLoading, setInitialLoading] = useState(true);
+  const [language, setLanguage] = useState('');
+  const [topic, setTopic] = useState('');
+  const router = useRouter();
+
+  const handleScroll = useCallback(() => {
+    if (loading) return;
+    if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 50) {
+      setPage((prevPage) => prevPage + 1);
+    }
+  }, [loading]);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [handleScroll]);
 
   const handleLanguageFilter = (lang) => {
     setLanguage(lang);
@@ -78,37 +95,50 @@ export default function Search() {
       <div className="flex justify-center mb-8">
         <LanguageFilter onFilter={handleLanguageFilter} initialValue={language} />
         <TopicFilter onFilter={handleTopicFilter} initialValue={topic} />
-        <button onClick={handleFilter} className="bg-blue-500 text-white p-2 ml-2 rounded-lg">
+        <Button onClick={handleFilter} className="p-4 ml-4 mt-2" variant="flat"
+          endContent={<SearchIcon className="text-black/50 mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0" />} 
+        >
           Search
-        </button>
+        </Button>
       </div>
-      <div className="flex justify-center">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          {initialLoading
-            ? Array.from({ length: 10 }).map((_, index) => (
-                <Card key={index} className="w-full sm:w-[600px] space-y-5 p-4" radius="lg">
-                  <Skeleton className="rounded-lg">
-                    <div className="h-24 rounded-lg bg-default-300"></div>
+      <Suspense fallback={<div>Loading search parameters...</div>}>
+        <SearchParamsWrapper setLanguage={setLanguage} setTopic={setTopic}>
+          <Projects
+            language={language}
+            topic={topic}
+            page={page}
+            setProjects={setProjects}
+            setLoading={setLoading}
+            setInitialLoading={setInitialLoading}
+            projects={projects}
+          />
+        </SearchParamsWrapper>
+      </Suspense>
+      {initialLoading && (
+        <div className="flex justify-center">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {Array.from({ length: 10 }).map((_, index) => (
+              <Card key={index} className="w-full sm:w-[600px] space-y-5 p-4" radius="lg">
+                <Skeleton className="rounded-lg">
+                  <div className="h-24 rounded-lg bg-default-300"></div>
+                </Skeleton>
+                <div className="space-y-3">
+                  <Skeleton className="w-full rounded-lg">
+                    <div className="h-3 w-full rounded-lg bg-default-200"></div>
                   </Skeleton>
-                  <div className="space-y-3">
-                    <Skeleton className="w-full rounded-lg">
-                      <div className="h-3 w-full rounded-lg bg-default-200"></div>
-                    </Skeleton>
-                    <Skeleton className="w-4/5 rounded-lg">
-                      <div className="h-3 w-4/5 rounded-lg bg-default-200"></div>
-                    </Skeleton>
-                    <Skeleton className="w-2/5 rounded-lg">
-                      <div className="h-3 w-2/5 rounded-lg bg-default-300"></div>
-                    </Skeleton>
-                  </div>
-                </Card>
-              ))
-            : projects.map((project) => (
-                <ProjectCard key={project.id} project={project} />
-              ))}
+                  <Skeleton className="w-4/5 rounded-lg">
+                    <div className="h-3 w-4/5 rounded-lg bg-default-200"></div>
+                  </Skeleton>
+                  <Skeleton className="w-2/5 rounded-lg">
+                    <div className="h-3 w-2/5 rounded-lg bg-default-300"></div>
+                  </Skeleton>
+                </div>
+              </Card>
+            ))}
+          </div>
         </div>
-      </div>
-      {loading && <div className="flex justify-center mt-8"><Spinner color="primary" /></div>}
+      )}
+      {loading && <div className="flex justify-center mt-8"><Spinner color="secondary" /></div>}
     </div>
   );
 }

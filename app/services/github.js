@@ -11,20 +11,22 @@ export const fetchGitHubProjects = async (page = 1, language = '', topic = '') =
   if (topic) query += ` topic:${topic}`;
 
   try {
-    const response = await fetch(`${GITHUB_API_URL}/search/repositories?q=${query}&sort=stars&order=desc&page=${page}`, {
+    const response = await axios.get(`${GITHUB_API_URL}/search/repositories`, {
+      params: {
+        q: query,
+        sort: 'stars',
+        order: 'desc',
+        page,
+        per_page: 30,  // You can adjust the number of items per page if needed
+      },
       headers: {
         Authorization: `token ${process.env.GITHUB_TOKEN}`,
       },
     });
 
-    if (!response.ok) {
-      throw new Error('Failed to fetch data from GitHub');
-    }
-
-    const data = await response.json();
-    return data.items || [];
+    return response.data.items || [];
   } catch (error) {
-    console.error(error);
+    console.error('Failed to fetch data from GitHub', error);
     return [];
   }
 };

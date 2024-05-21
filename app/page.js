@@ -3,8 +3,9 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { fetchRecentGitHubProjects } from './services/github';
-import { Card, Skeleton, Progress } from "@nextui-org/react";
+import { Card, Skeleton, Button, Progress } from "@nextui-org/react";
 import ProjectCard from './components/ProjectCard';
+import { SearchIcon } from './components/SearchIcon';
 import LanguageFilter from './components/LanguageFilter';
 import TopicFilter from './components/TopicFilter';
 
@@ -56,21 +57,23 @@ export default function Home() {
   return (
     <div className="container mx-auto p-4">
       {/* Heroes Section */}
-      <section className="bg-blue-500 text-white py-12 rounded-md mb-8">
+      <section className="bg-background/60 dark:bg-default-100/50 text-white py-12 rounded-md mb-8">
         <div className="container mx-auto text-center">
           <h1 className="text-4xl font-bold mb-4">Welcome to GitWatch</h1>
           <p className="mb-8">Discover and contribute to the most recent and popular open source projects on GitHub.</p>
-          <button onClick={handleFilter} className="bg-white text-blue-500 font-bold py-2 px-4 rounded-lg">
+          <Button onClick={handleFilter} variant="shadow" color='secondary' className="py-2 px-4">
             Start Exploring
-          </button>
+          </Button>
         </div>
       </section>
       <div className="flex justify-center mb-8">
         <LanguageFilter onFilter={setLanguage} />
         <TopicFilter onFilter={setTopic} />
-        <button onClick={handleFilter} className="bg-blue-500 text-white p-2 ml-2 rounded-lg">
+        <Button onClick={handleFilter} className="p-4 ml-4 mt-2" variant="flat" 
+          endContent={<SearchIcon className="text-black/50 mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0" />} 
+        >
           Search
-        </button>
+        </Button>
       </div>
 
       <h2 className="text-2xl font-bold mb-7 text-center">Most Recently Updated Repositories</h2>
