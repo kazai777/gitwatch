@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { fetchGitHubProjects } from '../services/github';
 import { Card, Skeleton, Spinner, Button } from "@nextui-org/react";
@@ -8,7 +8,25 @@ import ProjectCard from '../components/ProjectCard';
 import LanguageFilter from '../components/LanguageFilter';
 import TopicFilter from '../components/TopicFilter';
 import { SearchIcon } from '../components/SearchIcon';
-import { Suspense } from 'react';
+
+function ProjectList({ language, topic, page, setProjects, setLoading, setInitialLoading }) {
+  useEffect(() => {
+    const loadProjects = async () => {
+      if (page === 1) {
+        setInitialLoading(true);
+      } else {
+        setLoading(true);
+      }
+      const newProjects = await fetchGitHubProjects(page, language, topic);
+      setProjects((prevProjects) => (page === 1 ? newProjects : [...prevProjects, ...newProjects]));
+      setLoading(false);
+      setInitialLoading(false);
+    };
+    loadProjects();
+  }, [page, language, topic]);
+
+  return null;
+}
 
 export default function Search() {
   const [projects, setProjects] = useState([]);
@@ -28,22 +46,6 @@ export default function Search() {
 
   const [language, setLanguage] = useState(searchParams.get('language') || '');
   const [topic, setTopic] = useState(searchParams.get('topic') || '');
-
-  // Fetch projects when search parameters or page change
-  useEffect(() => {
-    const loadProjects = async () => {
-      if (page === 1) {
-        setInitialLoading(true);
-      } else {
-        setLoading(true);
-      }
-      const newProjects = await fetchGitHubProjects(page, language, topic);
-      setProjects((prevProjects) => (page === 1 ? newProjects : [...prevProjects, ...newProjects]));
-      setLoading(false);
-      setInitialLoading(false);
-    };
-    loadProjects();
-  }, [page, language, topic]);
 
   const handleScroll = () => {
     if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight) return;
@@ -86,7 +88,15 @@ export default function Search() {
             Search
           </Button>
       </div>
-      <Suspense>
+      <Suspense fallback={<div>Loading search parameters...</div>}>
+        <ProjectList 
+          language={language}
+          topic={topic}
+          page={page}
+          setProjects={setProjects}
+          setLoading={setLoading}
+          setInitialLoading={setInitialLoading}
+        />
         <div className="flex justify-center">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {initialLoading
