@@ -54,3 +54,4 @@ export const fetchRecentGitHubProjects = async () => {
     return [];
   }
 };
+

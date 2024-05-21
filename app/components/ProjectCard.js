@@ -3,7 +3,6 @@ import Link from "next/link";
 import { Card, CardBody, Image, Button } from "@nextui-org/react";
 
 export default function ProjectCard({ project }) {
-  const [liked, setLiked] = React.useState(false);
 
   return (
     <Card
@@ -31,14 +30,6 @@ export default function ProjectCard({ project }) {
                 <p className="text-small text-foreground/80">{project.language}</p>
                 <p className="text-small text-foreground/80 mt-2">{project.description}</p>
               </div>
-              <Button
-                isIconOnly
-                className="text-default-900/60 data-[hover]:bg-foreground/10 -translate-y-2 translate-x-2"
-                radius="full"
-                variant="light"
-                onPress={() => setLiked((v) => !v)}
-              >
-              </Button>
             </div>
 
             <div className="flex justify-between mt-3">
