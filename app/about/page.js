@@ -3,6 +3,7 @@ export default function About() {
         <div>
         <h1>About</h1>
         <p>Test continious</p>
+        <p>Test continious</p>
         </div>
     );
 }
