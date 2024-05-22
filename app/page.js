@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { fetchRecentGitHubProjects } from './services/github';
-import { Card, Skeleton, Button } from "@nextui-org/react";
+import { Card, Skeleton, Button, Image } from "@nextui-org/react";
 import ProjectCard from './components/ProjectCard';
 import { SearchIcon } from './components/SearchIcon';
 import LanguageFilter from './components/LanguageFilter';
@@ -46,11 +46,19 @@ export default function Home() {
         <div className="container mx-auto text-center">
           <h1 className="text-4xl font-bold mb-4">Welcome to GitWatch</h1>
           <p className="mb-8">Discover and contribute to the most recent and popular open source projects on GitHub.</p>
+          <div className='flex justify-center mb-8'>
+          <Image src="/heroe.webp" alt="Opensource representation" width={700} />
+          </div>
           <Button onClick={handleFilter} variant="shadow" color='secondary' className="py-2 px-4">
             Start Exploring
           </Button>
+          <Button onClick={handleFilter} variant="bordered" color='secondary' className="py-2 px-4 ml-5">
+            Contribute to GitWatch
+          </Button>
         </div>
       </section>
+      <h2 className="text-2xl font-bold mb-4 text-center">Search GitHub Open Source Projects</h2>
+
       <div className="flex justify-center mb-8">
         <LanguageFilter onFilter={setLanguage} />
         <TopicFilter onFilter={setTopic} />
@@ -60,6 +68,11 @@ export default function Home() {
           Search
         </Button>
       </div>
+      <section className="bg-background/60 dark:bg-default-100/50 text-white py-12 rounded-md mb-8">
+        <div className="container mx-auto text-center">
+          Top project of the week
+        </div>
+      </section>
 
       <h2 className="text-2xl font-bold mb-4 text-center">Most Recently Updated Repositories</h2>
       <div className="flex justify-center">
