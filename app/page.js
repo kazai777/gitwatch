@@ -14,7 +14,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [language, setLanguage] = useState('');
   const [topic, setTopic] = useState('');
-  const [countdown, setCountdown] = useState(60);
+  const [countdown, setCountdown] = useState(0);
   const router = useRouter();
 
   const loadRecentProjects = async () => {
@@ -22,7 +22,7 @@ export default function Home() {
     const recentProjects = await fetchRecentGitHubProjects();
     setProjects(recentProjects);
     setLoading(false);
-    setCountdown(60);
+    setCountdown(0);
   };
 
   useEffect(() => {
@@ -35,10 +35,10 @@ export default function Home() {
 
     const countdownInterval = setInterval(() => {
       setCountdown((prevCountDown) => {
-        if (prevCountDown === 0) {
-          return 60;
+        if (prevCountDown >= 60) {
+          return 0;
         }
-        return prevCountDown - 1;
+        return prevCountDown + 1;
       
       });
     }, 1000);
@@ -82,10 +82,9 @@ export default function Home() {
             size='sm' 
             color='secondary'
             value={countdown} 
+            maxValue={60}
             className="w-3/5 font-size-1.5xl"  
-            showValueLabel={true} 
-            formatOptions={{ style: 'unit', unit: 'second', unitDisplay: 'narrow'}} 
-            label='Next refresh in'
+            label='Next refresh'
           />
       </div>
       <div className="flex justify-center mb-4">
