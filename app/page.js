@@ -57,7 +57,7 @@ export default function Home() {
   return (
     <div className="container mx-auto p-4">
       {/* Heroes Section */}
-      <section className="bg-background/60 dark:bg-default-100/50 text-white py-12 rounded-md mb-8">
+      <section className="bg-background/60 dark:bg-default-100/50 text-white py-12 rounded-md mb-8 mt-4">
         <div className="container mx-auto text-center">
           <h1 className="text-4xl font-bold mb-4">Welcome to GitWatch</h1>
           <p className="mb-8">Discover and contribute to the most recent and popular open source projects on GitHub.</p>
